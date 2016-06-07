@@ -100,8 +100,6 @@ int main(int argc, char* argv[]){
 	// Frame counter
 	int nFrames = 0;
 
-  clock_t start,end; // typedef long clock_t
-	start = clock();
 
 	while ( 1 ){
 		cam >> frame;
@@ -121,9 +119,17 @@ int main(int argc, char* argv[]){
       }
     // 	// Update
       else{
+        clock_t start,end; // typedef long clock_t
+        start = clock();
+
     		result = tracker.update(frame);
         rectangle( frame, Point( result.x, result.y ), Point( result.x+result.width, result.y+result.height), Scalar( 0, 255, 255 ), 1, 8 );
     // 		resultsFile << result.x << "," << result.y << "," << result.width << "," << result.height << endl;
+
+        end = clock();
+
+        double duration =(double)(end-start)/CLOCKS_PER_SEC;
+        printf("%f\n",1/duration);
       }
       // printf("%s\n", "a");
       nFrames++;
@@ -131,13 +137,6 @@ int main(int argc, char* argv[]){
       rectangle( frame, Point( xMin, yMin ), Point( xMin+width, yMin+height), Scalar( 0, 255, 255 ), 1, 8 );
     }
 
-    if(nFrames == 100)
-    {
-      end = clock();
-
-    	double duration =(double)(end-start)/CLOCKS_PER_SEC;
-      printf("%f\n",nFrames/duration);
-    }
 
 		if (!SILENT){
 			imshow(window_name, frame);
