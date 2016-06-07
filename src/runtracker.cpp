@@ -120,18 +120,24 @@ int main(int argc, char* argv[]){
       }
     // 	// Update
       else{
-        struct timeval tBeginTime, tEndTime;
-        gettimeofday(&tBeginTime, NULL);
+        timespec start, end, diff;
+        clock_gettime(CLOCK_THREAD_CPUTIME_ID, &start);
 
     		result = tracker.update(frame);
         rectangle( frame, Point( result.x, result.y ), Point( result.x+result.width, result.y+result.height), Scalar( 0, 255, 255 ), 1, 8 );
     // 		resultsFile << result.x << "," << result.y << "," << result.width << "," << result.height << endl;
 
-        gettimeofday(&tEndTime, NULL);
-        float fCostTime = 1000000*(tEndTime.tv_sec-tBeginTime.tv_sec) + (tEndTime.tv_usec-tBeginTime.tv_usec);
-        fCostTime /= 1000000;
+      clock_gettime(CLOCK_THREAD_CPUTIME_ID, &end);
+      diff.tv_sec = ( end.tv_sec - start.tv_sec );
+      diff.tv_nsec = ( end.tv_nsec - start.tv_nsec );
+      if (diff.tv_nsec < 0) {
+      diff.tv_sec--;
+      diff.tv_nsec += 1000000000;
+      }
+      int usec = diff.tv_nsec + diff.tv_sec * 1000000000;
+      double resultTime = (double)usec / 1000000000;
 
-        printf("%f\n",1/fCostTime);
+        printf("%f\n",1/resultTime);
       }
       // printf("%s\n", "a");
       nFrames++;
