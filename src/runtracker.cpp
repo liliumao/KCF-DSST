@@ -10,6 +10,7 @@
 #include "kcftracker.hpp"
 
 #include <dirent.h>
+#include <sys/time.h>
 
 using namespace std;
 using namespace cv;
@@ -119,17 +120,18 @@ int main(int argc, char* argv[]){
       }
     // 	// Update
       else{
-        clock_t start,end; // typedef long clock_t
-        start = clock();
+        struct timeval tBeginTime, tEndTime;
+        gettimeofday(&tBeginTime, NULL);
 
     		result = tracker.update(frame);
         rectangle( frame, Point( result.x, result.y ), Point( result.x+result.width, result.y+result.height), Scalar( 0, 255, 255 ), 1, 8 );
     // 		resultsFile << result.x << "," << result.y << "," << result.width << "," << result.height << endl;
 
-        end = clock();
+        gettimeofday(&tEndTime, NULL);
+        float fCostTime = 1000000*(tEndTime.tv_sec-tBeginTime.tv_sec) + (tEndTime.tv_usec-tBeginTime.tv_usec);
+        fCostTime /= 1000000;
 
-        double duration =(double)(end-start)/CLOCKS_PER_SEC;
-        printf("%f\n",1/duration);
+        printf("%f\n",1/fCostTime);
       }
       // printf("%s\n", "a");
       nFrames++;

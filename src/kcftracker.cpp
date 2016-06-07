@@ -139,7 +139,7 @@ KCFTracker::KCFTracker(bool hog, bool fixed_window, bool multiscale, bool lab)
         template_size = 96;
         //scale parameters initial
         scale_padding = 1.0;
-        scale_step = 1.02;
+        scale_step = 1.05;
         scale_sigma_factor = 0.25;
         n_scales = 33;
         scale_lr = 0.025;
@@ -206,8 +206,8 @@ cv::Rect KCFTracker::update(cv::Mat image)
     currentScaleFactor = currentScaleFactor * scaleFactors[scale_pi.x];
     if(currentScaleFactor < min_scale_factor)
       currentScaleFactor = min_scale_factor;
-    else if(currentScaleFactor > max_scale_factor)
-      currentScaleFactor = max_scale_factor;
+    // else if(currentScaleFactor > max_scale_factor)
+    //   currentScaleFactor = max_scale_factor;
 
     train_scale(image);
 
