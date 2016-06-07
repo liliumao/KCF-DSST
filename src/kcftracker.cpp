@@ -624,6 +624,8 @@ void KCFTracker::update_roi()
   float cx = _roi.x + _roi.width / 2.0f;
   float cy = _roi.y + _roi.height / 2.0f;
 
+  // printf("%f\n", currentScaleFactor);
+
   // Recompute the ROI left-upper point and size
   _roi.width = base_width * currentScaleFactor;
   _roi.height = base_height * currentScaleFactor;
