@@ -11,3 +11,9 @@ DSST scaling changing part is added to the original kcftracker.cpp/hpp file. Ori
 "Exploiting the Circulant Structure of Tracking-by-detection with Kernels", ECCV 2012.
 
 [3] M. Danelljan, G. Häger, F. Shahbaz Khan, and M. Felsberg. Accurate scale estimation for robust visual tracking. In Proceedings of the British Machine Vision Conference (BMVC), 2014.
+
+# Details
+
+Consider the performance, max_scale_factor is not used, which means you can have a unlimited large ROI. What's more, since the actually picture read in by camera is much larger than test ones, DSST scale_step is changed to 1.05 instead of 1.02.
+
+All changes above may lead to lags when the ROI frame is very large. You may need to move slower in this case to have tracker follow you.

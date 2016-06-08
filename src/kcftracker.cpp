@@ -586,7 +586,7 @@ void KCFTracker::train_scale(cv::Mat image, bool ini)
 {
   cv::Mat xsf = get_scale_sample(image);
 
-  // Adjust ysf to the some size as xsf in the first time
+  // Adjust ysf to the same size as xsf in the first time
   if(ini)
   {
     int totalSize = xsf.rows;
