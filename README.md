@@ -14,6 +14,6 @@ DSST scaling changing part is added to the original kcftracker.cpp/hpp file. Ori
 
 # Details
 
-Consider the performance, max_scale_factor is not used, which means you can have a unlimited large ROI. What's more, since the actually picture read in by camera is much larger than test ones, DSST scale_step is changed to 1.05 instead of 1.02.
+Consider the performance, max_scale_factor is not used, which means you can have a unlimited large ROI. What's more, since the actually picture read in by camera is much larger than test ones, DSST scale_step is changed to 1.05 instead of 1.02. Also, reduce the number of candidate scales can speed up the tracker. Change 33 candidate scales to 17 may speed up nearly 100%.
 
 All changes above may lead to lags when the ROI frame is very large. You may need to move slower in this case to have tracker follow you.
