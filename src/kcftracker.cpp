@@ -568,8 +568,8 @@ void KCFTracker::dsstInit(const cv::Rect &roi, cv::Mat image)
   {
     scale_model_factor = std::sqrt(scale_max_area / (float)(base_width * base_height));
   }
-  scale_model_width = std::floor(base_width * scale_model_factor);
-  scale_model_height = std::floor(base_height * scale_model_factor);
+  scale_model_width = (int)(base_width * scale_model_factor);
+  scale_model_height = (int)(base_height * scale_model_factor);
 
   // Compute min and max scaling rate
   min_scale_factor = std::pow(scale_step,
@@ -645,24 +645,24 @@ cv::Mat KCFTracker::get_scale_sample(const cv::Mat & image)
   for(int i = 0; i < n_scales; i++)
   {
     // Size of subwindow waiting to be detect
-    float patch_width = std::floor(base_width * scaleFactors[i] * currentScaleFactor);
-    float patch_height = std::floor(base_height * scaleFactors[i] * currentScaleFactor);
+    float patch_width = base_width * scaleFactors[i] * currentScaleFactor;
+    float patch_height = base_height * scaleFactors[i] * currentScaleFactor;
 
     float cx = _roi.x + _roi.width / 2.0f;
     float cy = _roi.y + _roi.height / 2.0f;
 
     // Get the subwindow
-    cv::Mat im_pacth = RectTools::extractImage(image, cx, cy, patch_width, patch_height);
-    cv::Mat im_pacth_resized;
+    cv::Mat im_patch = RectTools::extractImage(image, cx, cy, patch_width, patch_height);
+    cv::Mat im_patch_resized;
 
     // Scaling the subwindow
-    if(scale_model_width > im_pacth.cols)
-      resize(im_pacth, im_pacth_resized, cv::Size(scale_model_width, scale_model_height), 0, 0, 1);
+    if(scale_model_width > im_patch.cols)
+      resize(im_patch, im_patch_resized, cv::Size(scale_model_width, scale_model_height), 0, 0, 1);
     else
-      resize(im_pacth, im_pacth_resized, cv::Size(scale_model_width, scale_model_height), 0, 0, 3);
+      resize(im_patch, im_patch_resized, cv::Size(scale_model_width, scale_model_height), 0, 0, 3);
 
     // Compute the FHOG features for the subwindow
-    IplImage im_ipl = im_pacth_resized;
+    IplImage im_ipl = im_patch_resized;
     getFeatureMaps(&im_ipl, cell_size, &map[i]);
     normalizeAndTruncate(map[i], 0.2f);
     PCAFeatureMaps(map[i]);
